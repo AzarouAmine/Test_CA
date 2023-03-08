@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Test CA</string>
+    <string name="title_accounts">Mes Comptes</string>
+    <string name="title_simulation">Simulation</string>
+    <string name="title_misc">A Vous de Jouer</string>
+</resources>
