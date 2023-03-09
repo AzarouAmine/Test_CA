@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="anti_flash_white">#FFF2F2F2</color>
     <color name="ghost_white">#FFF9F9F9</color>
+    <color name="cultured">#FFF6F7F9</color>
 </resources>

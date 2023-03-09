@@ -1,10 +1,8 @@
 package come.azaroumedamine.mobiletest.ca.ui.accounts
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import come.azaroumedamine.mobiletest.ca.R
 import come.azaroumedamine.mobiletest.ca.data.models.Bank
 import come.azaroumedamine.mobiletest.ca.data.models.BankAccount
 import come.azaroumedamine.mobiletest.ca.ui.accounts.views.ItemContentView
@@ -22,6 +20,8 @@ class BankAccountExpandableAdapter(private val bank: Bank) :
         private const val EXPANDED_ROTATION_DEGREE = 0F
         private const val COLLAPSED_ROTATION_DEGREE = 180F
     }
+
+    var onItemClickedListener: ((accountId: String) -> Unit)? = null
 
     // Initial value is not expanded
     private var isExpanded: Boolean by Delegates.observable(false) { _: KProperty<*>, _: Boolean, newExpandedValue: Boolean ->
@@ -55,7 +55,7 @@ class BankAccountExpandableAdapter(private val bank: Bank) :
     override fun getItemCount(): Int = if (isExpanded) bank.accounts.size + 1 else 1
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = when (holder) {
-        is ViewHolder.ItemViewHolder -> holder.bind(bank.accounts.get(position - 1))
+        is ViewHolder.ItemViewHolder -> holder.bind(bank.accounts.get(position - 1), onItemClickedListener = onItemClickedListener)
         is ViewHolder.HeaderViewHolder -> {
             holder.bind(bank, isExpanded, onHeaderClickListener)
         }
@@ -65,8 +65,11 @@ class BankAccountExpandableAdapter(private val bank: Bank) :
 
         class ItemViewHolder(private val item: ItemContentView) : ViewHolder(item) {
 
-            fun bind(content: BankAccount) {
-                item.setData(ItemContentView.ItemContentViewUIModel(content.title, content.balance))
+            fun bind(content: BankAccount, onItemClickedListener: ((accountId: String) -> Unit)? = null) {
+                item.setData(ItemContentView.ItemContentViewUIModel(content.id, content.title, content.balance))
+                item.onItemClickedListener = {
+                    onItemClickedListener?.invoke(it)
+                }
             }
         }
 

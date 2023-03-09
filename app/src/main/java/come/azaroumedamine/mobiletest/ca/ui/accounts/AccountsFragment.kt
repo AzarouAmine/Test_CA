@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import come.azaroumedamine.mobiletest.ca.R
 import come.azaroumedamine.mobiletest.ca.data.models.Bank
 import come.azaroumedamine.mobiletest.ca.databinding.FragmentAccountsBinding
+import come.azaroumedamine.mobiletest.ca.ui.accounts.operations.AccountOperationsFragment.Companion.ACCOUNT_ID_EXTRA
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class AccountsFragment : Fragment() {
@@ -21,17 +23,13 @@ class AccountsFragment : Fragment() {
     private var _binding: FragmentAccountsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: BanksViewModel by viewModels()
+    private val viewModel: BanksViewModel by activityViewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAccountsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
-    }
+    ): View = FragmentAccountsBinding.inflate(inflater, container, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,7 +48,14 @@ class AccountsFragment : Fragment() {
 
     private fun getAdapter(banks: List<Bank>?): ConcatAdapter {
         val adapters: List<BankAccountExpandableAdapter> = banks?.map { bank ->
-            BankAccountExpandableAdapter(bank)
+            val adapter = BankAccountExpandableAdapter(bank)
+            adapter.onItemClickedListener = { accountId ->
+                findNavController().navigate(
+                    R.id.action_accountsFragment_to_accountOperationsFragment,
+                    bundleOf(ACCOUNT_ID_EXTRA to accountId)
+                )
+            }
+            adapter
         } ?: emptyList()
         val concatAdapterConfig = ConcatAdapter.Config.Builder()
             .build()

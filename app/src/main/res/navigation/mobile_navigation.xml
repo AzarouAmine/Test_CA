@@ -5,12 +5,21 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_accounts">
 
-
     <fragment
         android:id="@+id/navigation_accounts"
         android:name="come.azaroumedamine.mobiletest.ca.ui.accounts.AccountsFragment"
         android:label="@string/title_accounts"
-        tools:layout="@layout/fragment_accounts" />
+        tools:layout="@layout/fragment_accounts">
+        <action
+            android:id="@+id/action_accountsFragment_to_accountOperationsFragment"
+            app:destination="@id/navigation_account_operations" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_account_operations"
+        android:name="come.azaroumedamine.mobiletest.ca.ui.accounts.operations.AccountOperationsFragment"
+        android:label="@string/title_account_operations"
+        tools:layout="@layout/fragment_account_operations" />
 
     <fragment
         android:id="@+id/navigation_simulation"
