@@ -23,13 +23,13 @@
 
     <fragment
         android:id="@+id/navigation_simulation"
-        android:name="come.azaroumedamine.mobiletest.ca.ui.home.HomeFragment"
+        android:name="come.azaroumedamine.mobiletest.ca.ui.simulation.SimulationFragment"
         android:label="@string/title_simulation"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_simulation" />
 
     <fragment
         android:id="@+id/navigation_misc"
-        android:name="come.azaroumedamine.mobiletest.ca.ui.notifications.NotificationsFragment"
+        android:name="come.azaroumedamine.mobiletest.ca.ui.misc.MiscFragment"
         android:label="@string/title_misc"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_misc" />
 </navigation>

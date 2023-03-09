@@ -1,13 +1,13 @@
-package come.azaroumedamine.mobiletest.ca.ui.notifications
+package come.azaroumedamine.mobiletest.ca.ui.simulation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
+class SimulationViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is misc Fragment"
+        value = "This is simulation Fragment"
     }
     val text: LiveData<String> = _text
 }

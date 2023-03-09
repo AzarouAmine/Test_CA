@@ -1,13 +1,16 @@
 package come.azaroumedamine.mobiletest.ca.di
 
+import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import come.azaroumedamine.mobiletest.ca.data.repository.BanksRepository
-import come.azaroumedamine.mobiletest.ca.data.source.network.BanksNetworkDataSource
+import come.azaroumedamine.mobiletest.ca.data.repository.BanksRepositoryImpl
+import come.azaroumedamine.mobiletest.ca.data.source.network.BanksLocalDataSourceImpl
+import come.azaroumedamine.mobiletest.ca.data.source.network.BanksNetworkDataSourceImpl
 import come.azaroumedamine.mobiletest.ca.data.source.network.BanksService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -41,11 +44,15 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideAccountsNetworkDataSource(banksService: BanksService) = BanksNetworkDataSource(banksService)
+    fun provideAccountsNetworkDataSource(banksService: BanksService) = BanksNetworkDataSourceImpl(banksService)
+
+    @Singleton
+    @Provides
+    fun provideAccountsLocalDataSource(@ApplicationContext context: Context) = BanksLocalDataSourceImpl(context)
 
     @Singleton
     @Provides
     fun provideAccountsRepository(
-        banksNetworkDataSource: BanksNetworkDataSource
-    ) =  BanksRepository(banksNetworkDataSource)
+        banksNetworkDataSourceImpl: BanksNetworkDataSourceImpl, banksLocalDataSourceImpl: BanksLocalDataSourceImpl
+    ) =  BanksRepositoryImpl(banksNetworkDataSourceImpl, banksLocalDataSourceImpl)
 }

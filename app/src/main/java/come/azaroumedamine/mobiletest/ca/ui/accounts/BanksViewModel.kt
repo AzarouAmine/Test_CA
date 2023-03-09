@@ -6,22 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import come.azaroumedamine.mobiletest.ca.data.models.Bank
 import come.azaroumedamine.mobiletest.ca.data.models.BankAccount
-import come.azaroumedamine.mobiletest.ca.data.repository.BanksRepository
+import come.azaroumedamine.mobiletest.ca.data.repository.BanksRepositoryImpl
 import come.azaroumedamine.mobiletest.ca.data.source.network.Resource
 import come.azaroumedamine.mobiletest.ca.utils.bool
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class BanksViewModel @Inject constructor(
-    private val banksRepository: BanksRepository
+    private val banksRepositoryImpl: BanksRepositoryImpl
 ): ViewModel() {
 
-    private val banks: LiveData<Resource<List<Bank>>> = liveData(Dispatchers.IO) {
+    val banks: LiveData<Resource<List<Bank>>> = liveData(Dispatchers.IO) {
         emit(Resource.loading())
-        val response = banksRepository.getBanks()
+        val response = banksRepositoryImpl.getBanks()
 
         if (response.status == Resource.Status.SUCCESS) {
             emit(response)

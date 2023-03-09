@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import come.azaroumedamine.mobiletest.ca.data.models.BankAccount
 import come.azaroumedamine.mobiletest.ca.databinding.FragmentAccountOperationsBinding
 import come.azaroumedamine.mobiletest.ca.ui.accounts.BanksViewModel
+import come.azaroumedamine.mobiletest.ca.utils.DateUtils
 import come.azaroumedamine.mobiletest.ca.utils.TextUtils
 
 class AccountOperationsFragment : Fragment() {
@@ -52,7 +53,13 @@ class AccountOperationsFragment : Fragment() {
     }
 
     private fun setupRecyclerView(bankAccount: BankAccount) {
-        adapter = AccountOperationsAdapter(bankAccount)
+        val bankAccountsSorted = bankAccount.copy(id = bankAccount.id,
+            title = bankAccount.title,
+            balance = bankAccount.balance,
+            operations = bankAccount.operations.sortedWith(
+                compareBy({ DateUtils.getDateFromTimeStamp(it.date) }, { it.title })
+            ))
+        adapter = AccountOperationsAdapter(bankAccountsSorted)
         with(binding) {
             accountOperationsRecyclerview.layoutManager = LinearLayoutManager(requireContext())
             accountOperationsRecyclerview.adapter = adapter
